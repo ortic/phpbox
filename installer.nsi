@@ -25,21 +25,39 @@ FunctionEnd
 !insertmacro MUI_LANGUAGE "English"
 
 # Installer Sections
-Section "Base" SecBase
-	SectionIn RO 
-	SetOutPath "$INSTDIR"
 
-	inetc::get http://windows.php.net/downloads/releases/php-5.6.16-nts-Win32-VC11-x86.zip $INSTDIR\php.zip
-	CreateDirectory "$INSTDIR\php"
-	nsisunz::UnzipToLog "$INSTDIR\php.zip" "$INSTDIR\php"
-	Delete $INSTDIR\php.zip
-	
-  	File README.md
-	
-	${EnvVarUpdate} $0 "PATH" "A" "HKCU" "$INSTDIR"
-  
-	WriteUninstaller "$INSTDIR\Uninstall.exe"
-SectionEnd
+SectionGroup /e "PHP"
+	Section "Base" SecBase
+		SectionIn RO 
+		SetOutPath "$INSTDIR"
+
+		inetc::get http://windows.php.net/downloads/releases/php-5.6.16-nts-Win32-VC11-x86.zip $INSTDIR\php.zip
+		CreateDirectory "$INSTDIR\php"
+		nsisunz::UnzipToLog "$INSTDIR\php.zip" "$INSTDIR\php"
+		Delete $INSTDIR\php.zip
+		
+		File README.md
+		
+		${EnvVarUpdate} $0 "PATH" "A" "HKCU" "$INSTDIR"
+	  
+		WriteUninstaller "$INSTDIR\Uninstall.exe"
+	SectionEnd
+		
+	Section "Composer" SecPhpComposer
+		inetc::get https://getcomposer.org/composer.phar $INSTDIR\php\composer.phar
+		File composer.bat
+	SectionEnd
+
+	Section "CS Fixer" SecPhpCsFixer
+		inetc::get http://get.sensiolabs.org/php-cs-fixer.phar $INSTDIR\php\php-cs-fixer.phar
+		File php-cs-fixer.bat
+	SectionEnd
+
+	Section "MD" SecPhpMd
+		inetc::get http://static.phpmd.org/php/latest/phpmd.phar $INSTDIR\php\phpmd.phar
+		File phpmd.bat
+	SectionEnd
+SectionGroupEnd
 
 Section "Gettext" SecGettext
 	inetc::get https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.6-v1.14/gettext0.19.6-iconv1.14-static-32.exe $INSTDIR\gettexticonv.exe
@@ -47,26 +65,21 @@ Section "Gettext" SecGettext
 	Delete $INSTDIR\gettexticonv.exe
 SectionEnd
 
-Section "PHP Composer" SecPhpComposer
-	inetc::get https://getcomposer.org/composer.phar $INSTDIR\php\composer.phar
-	File composer.bat
-SectionEnd
-
-Section "PHP CS Fixer" SecPhpCsFixer
-	inetc::get http://get.sensiolabs.org/php-cs-fixer.phar $INSTDIR\php\php-cs-fixer.phar
-	File php-cs-fixer.bat
-SectionEnd
-
-Section "PHP MD" SecPhpMd
-	inetc::get http://static.phpmd.org/php/latest/phpmd.phar $INSTDIR\php\phpmd.phar
-	File phpmd.bat
-SectionEnd
-
-Section "NodeJS" SecNodeJs
-	inetc::get https://nodejs.org/dist/v4.2.3/node-v4.2.3-x86.msi $INSTDIR\nodejs.msi
-	ExecWait '"$SYSDIR\msiExec" /i "$INSTDIR\nodejs.msi" /passive'
-	Delete $INSTDIR\nodejs.msi
-SectionEnd
+SectionGroup /e "NodeJS"
+	Section "Base" SecNodeJs
+		inetc::get https://nodejs.org/dist/v4.2.3/node-v4.2.3-x86.msi $INSTDIR\nodejs.msi
+		ExecWait '"$SYSDIR\msiExec" /i "$INSTDIR\nodejs.msi" /passive'
+		Delete $INSTDIR\nodejs.msi
+	SectionEnd
+	
+	Section "Grunt" SecNodeJsGrunt
+		ExecWait "npm install -g grunt-cli"
+	SectionEnd
+	
+	Section "JsHint" SecNodeJsHint
+		ExecWait "npm install -g jshint"
+	SectionEnd	
+SectionGroupEnd
 
 # Language strings
 LangString DESC_SecBase ${LANG_ENGLISH} "Base functionality, mandatory."
@@ -75,6 +88,8 @@ LangString DESC_SecGettext ${LANG_ENGLISH} "Gettext and iconv console tools"
 LangString DESC_SecPhpCsFixer ${LANG_ENGLISH} "PHP CS Fixer"
 LangString DESC_SecPhpMd ${LANG_ENGLISH} "PHP Mess Detecter to find possible bugs, suboptimal as well as overcomplicated code"
 LangString DESC_SecNodeJs ${LANG_ENGLISH} "NodeJS"
+LangString DESC_SecNodeJsGrunt ${LANG_ENGLISH} "Grunt"
+LangString DESC_SecNodeJsHint ${LANG_ENGLISH} "JS Hint"
 
 # Assign language strings to sections
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
@@ -84,6 +99,8 @@ LangString DESC_SecNodeJs ${LANG_ENGLISH} "NodeJS"
 !insertmacro MUI_DESCRIPTION_TEXT ${SecPhpCsFixer} $(DESC_SecPhpCsFixer)
 !insertmacro MUI_DESCRIPTION_TEXT ${SecPhpMd} $(DESC_SecPhpMd)
 !insertmacro MUI_DESCRIPTION_TEXT ${SecNodeJs} $(DESC_SecNodeJs)
+!insertmacro MUI_DESCRIPTION_TEXT ${SecNodeJsGrunt} $(DESC_SecNodeJsGrunt)
+!insertmacro MUI_DESCRIPTION_TEXT ${SecNodeJsHint} $(DESC_SecNodeJsHint)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 # Uninstaller Section
