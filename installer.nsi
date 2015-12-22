@@ -1,5 +1,6 @@
 # General
 !include "MUI2.nsh"
+!include "EnvVarUpdate.nsh"
 !define MY_APP "phpbox"
 Name "phpbox"
 OutFile "phpbox.exe"
@@ -34,6 +35,8 @@ Section "Base" SecBase
 	Delete $INSTDIR\php.zip
 	
   	File README.md
+	
+	${EnvVarUpdate} $0 "PATH" "A" "HKCU" "$INSTDIR"
   
 	WriteUninstaller "$INSTDIR\Uninstall.exe"
 SectionEnd
@@ -86,5 +89,6 @@ LangString DESC_SecNodeJs ${LANG_ENGLISH} "NodeJS"
 # Uninstaller Section
 Section "Uninstall"
   Delete "$INSTDIR\Uninstall.exe"
+  ${un.EnvVarUpdate} $0 "PATH" "R" "HKCU" "$INSTDIR"
   RMDir /r /REBOOTOK  "$INSTDIR"
 SectionEnd
