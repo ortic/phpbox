@@ -1,7 +1,10 @@
 # General
 !include "MUI2.nsh"
 !include "EnvVarUpdate.nsh"
+!include "AdvReplaceInFile.nsh"
+
 !define MY_APP "phpbox"
+
 Name "phpbox"
 OutFile "phpbox.exe"
 ShowInstDetails show
@@ -38,6 +41,16 @@ SectionGroup /e "PHP"
 		
 		# download xdebug extension
 		inetc::get http://xdebug.org/files/php_xdebug-2.4.0rc3-5.5-vc11.dll $INSTDIR\php5.5\ext\php_xdebug.dll
+		
+		# create php configuration file
+		File /oname=$INSTDIR\php5.5\php.ini php55.ini
+		
+		Push $$PHPPATH #text to be replaced
+		Push $INSTDIR\php5.6 #replace with
+		Push all #replace all occurrences
+		Push all #replace all occurrences
+		Push $INSTDIR\php5.6\php.ini #file to replace in
+		Call AdvReplaceInFile		
 	SectionEnd	
 	
 	Section "5.6" SecPhp56
@@ -57,6 +70,16 @@ SectionGroup /e "PHP"
 		File README.md
 		File php.bat
 		
+		# create php configuration file
+		File /oname=$INSTDIR\php5.6\php.ini php56.ini
+		
+		Push $$PHPPATH #text to be replaced
+		Push $INSTDIR\php5.6 #replace with
+		Push all #replace all occurrences
+		Push all #replace all occurrences
+		Push $INSTDIR\php5.6\php.ini #file to replace in
+		Call AdvReplaceInFile
+		
 		${EnvVarUpdate} $0 "PATH" "A" "HKCU" "$INSTDIR"
 	  
 		WriteUninstaller "$INSTDIR\Uninstall.exe"
@@ -72,6 +95,16 @@ SectionGroup /e "PHP"
 		
 		# download xdebug extension
 		inetc::get http://xdebug.org/files/php_xdebug-2.4.0rc3-7.0-vc14.dll $INSTDIR\php7.0\ext\php_xdebug.dll
+		
+		# create php configuration file
+		File /oname=$INSTDIR\php7.0\php.ini php70.ini
+		
+		Push $$PHPPATH #text to be replaced
+		Push $INSTDIR\php7.0 #replace with
+		Push all #replace all occurrences
+		Push all #replace all occurrences
+		Push $INSTDIR\php7.0\php.ini #file to replace in
+		Call AdvReplaceInFile
 		
 		Delete $INSTDIR\php7.0.zip
 	SectionEnd	
@@ -153,3 +186,4 @@ Section "Uninstall"
   ${un.EnvVarUpdate} $0 "PATH" "R" "HKCU" "$INSTDIR"
   RMDir /r /REBOOTOK  "$INSTDIR"
 SectionEnd
+
