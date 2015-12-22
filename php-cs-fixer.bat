@@ -1,2 +1,2 @@
 @ECHO OFF
-%~dp0\php\php.exe %~dp0\php\php-cs-fixer.phar %*
+%~dp0\php5.6\php.exe %~dp0\php5.6\php-cs-fixer.phar %*

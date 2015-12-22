@@ -27,14 +27,21 @@ FunctionEnd
 # Installer Sections
 
 SectionGroup /e "PHP"
-	Section "Base" SecBase
+	Section "5.5" SecPhp55
+		inetc::get http://windows.php.net/downloads/releases/php-5.5.30-Win32-VC11-x86.zip $INSTDIR\php5.5.zip
+		CreateDirectory "$INSTDIR\php5.5"
+		nsisunz::UnzipToLog "$INSTDIR\php5.5.zip" "$INSTDIR\php5.5"
+		Delete $INSTDIR\php5.5.zip
+	SectionEnd	
+	
+	Section "5.6" SecPhp56
 		SectionIn RO 
 		SetOutPath "$INSTDIR"
 
-		inetc::get http://windows.php.net/downloads/releases/php-5.6.16-nts-Win32-VC11-x86.zip $INSTDIR\php.zip
-		CreateDirectory "$INSTDIR\php"
-		nsisunz::UnzipToLog "$INSTDIR\php.zip" "$INSTDIR\php"
-		Delete $INSTDIR\php.zip
+		inetc::get http://windows.php.net/downloads/releases/php-5.6.16-Win32-VC11-x86.zip $INSTDIR\php5.6.zip
+		CreateDirectory "$INSTDIR\php5.6"
+		nsisunz::UnzipToLog "$INSTDIR\php5.6.zip" "$INSTDIR\php5.6"
+		Delete $INSTDIR\php5.6.zip
 		
 		File README.md
 		
@@ -42,7 +49,14 @@ SectionGroup /e "PHP"
 	  
 		WriteUninstaller "$INSTDIR\Uninstall.exe"
 	SectionEnd
-		
+	
+	Section "7.0" SecPhp70
+		inetc::get http://windows.php.net/downloads/releases/php-7.0.1-Win32-VC14-x86.zip $INSTDIR\php7.0.zip
+		CreateDirectory "$INSTDIR\php7.0"
+		nsisunz::UnzipToLog "$INSTDIR\php7.0.zip" "$INSTDIR\php7.0"
+		Delete $INSTDIR\php7.0.zip
+	SectionEnd	
+	
 	Section "Composer" SecPhpComposer
 		inetc::get https://getcomposer.org/composer.phar $INSTDIR\php\composer.phar
 		File composer.bat
@@ -82,7 +96,8 @@ SectionGroup /e "NodeJS"
 SectionGroupEnd
 
 # Language strings
-LangString DESC_SecBase ${LANG_ENGLISH} "Base functionality, mandatory."
+LangString DESC_SecPhp56 ${LANG_ENGLISH} "PHP 5.6"
+LangString DESC_SecPhp70 ${LANG_ENGLISH} "PHP 7.0"
 LangString DESC_SecPhpComposer ${LANG_ENGLISH} "composer, dependency management for PHP"
 LangString DESC_SecGettext ${LANG_ENGLISH} "Gettext and iconv console tools"
 LangString DESC_SecPhpCsFixer ${LANG_ENGLISH} "PHP CS Fixer"
@@ -93,7 +108,8 @@ LangString DESC_SecNodeJsHint ${LANG_ENGLISH} "JS Hint"
 
 # Assign language strings to sections
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-!insertmacro MUI_DESCRIPTION_TEXT ${SecBase} $(DESC_SecBase)
+!insertmacro MUI_DESCRIPTION_TEXT ${SecPhp56} $(DESC_SecPhp56)
+!insertmacro MUI_DESCRIPTION_TEXT ${SecPhp70} $(DESC_SecPhp70)
 !insertmacro MUI_DESCRIPTION_TEXT ${SecPhpComposer} $(DESC_SecPhpComposer)
 !insertmacro MUI_DESCRIPTION_TEXT ${SecGettext} $(DESC_SecGettext)
 !insertmacro MUI_DESCRIPTION_TEXT ${SecPhpCsFixer} $(DESC_SecPhpCsFixer)
