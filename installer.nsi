@@ -40,7 +40,7 @@ SectionEnd
 
 Section "Gettext" SecGettext
 	inetc::get https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.6-v1.14/gettext0.19.6-iconv1.14-static-32.exe $INSTDIR\gettexticonv.exe
-	Exec "$INSTDIR\gettexticonv.exe /silent"
+	ExecWait "$INSTDIR\gettexticonv.exe /silent"
 	Delete $INSTDIR\gettexticonv.exe
 SectionEnd
 
@@ -59,12 +59,19 @@ Section "PHP MD" SecPhpMd
 	File phpmd.bat
 SectionEnd
 
+Section "NodeJS" SecNodeJs
+	inetc::get https://nodejs.org/dist/v4.2.3/node-v4.2.3-x86.msi $INSTDIR\nodejs.msi
+	ExecWait '"$SYSDIR\msiExec" /i "$INSTDIR\nodejs.msi" /passive'
+	Delete $INSTDIR\nodejs.msi
+SectionEnd
+
 # Language strings
 LangString DESC_SecBase ${LANG_ENGLISH} "Base functionality, mandatory."
 LangString DESC_SecPhpComposer ${LANG_ENGLISH} "composer, dependency management for PHP"
 LangString DESC_SecGettext ${LANG_ENGLISH} "Gettext and iconv console tools"
 LangString DESC_SecPhpCsFixer ${LANG_ENGLISH} "PHP CS Fixer"
 LangString DESC_SecPhpMd ${LANG_ENGLISH} "PHP Mess Detecter to find possible bugs, suboptimal as well as overcomplicated code"
+LangString DESC_SecNodeJs ${LANG_ENGLISH} "NodeJS"
 
 # Assign language strings to sections
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
@@ -73,6 +80,7 @@ LangString DESC_SecPhpMd ${LANG_ENGLISH} "PHP Mess Detecter to find possible bug
 !insertmacro MUI_DESCRIPTION_TEXT ${SecGettext} $(DESC_SecGettext)
 !insertmacro MUI_DESCRIPTION_TEXT ${SecPhpCsFixer} $(DESC_SecPhpCsFixer)
 !insertmacro MUI_DESCRIPTION_TEXT ${SecPhpMd} $(DESC_SecPhpMd)
+!insertmacro MUI_DESCRIPTION_TEXT ${SecNodeJs} $(DESC_SecNodeJs)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 # Uninstaller Section
