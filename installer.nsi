@@ -49,16 +49,24 @@ Section "Gettext" SecGettext
 	Delete $INSTDIR\gettexticonv.exe
 SectionEnd
 
+Section "PHP CS Fixer" SecCsFixer
+	inetc::get http://get.sensiolabs.org/php-cs-fixer.phar $INSTDIR\php\php-cs-fixer.phar
+	File php-cs-fixer.bat
+SectionEnd
+
+
 # Language strings
 LangString DESC_SecBase ${LANG_ENGLISH} "Base functionality, mandatory."
 LangString DESC_SecComposer ${LANG_ENGLISH} "composer, dependency management for PHP"
 LangString DESC_SecGettext ${LANG_ENGLISH} "Gettext and iconv console tools"
+LangString DESC_SecCsFixer ${LANG_ENGLISH} "PHP CS Fixer"
 
 # Assign language strings to sections
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
 !insertmacro MUI_DESCRIPTION_TEXT ${SecBase} $(DESC_SecBase)
 !insertmacro MUI_DESCRIPTION_TEXT ${SecComposer} $(DESC_SecComposer)
 !insertmacro MUI_DESCRIPTION_TEXT ${SecGettext} $(DESC_SecGettext)
+!insertmacro MUI_DESCRIPTION_TEXT ${SecCsFixer} $(DESC_SecCsFixer)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 # Uninstaller Section
