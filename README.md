@@ -19,6 +19,6 @@ An NSIS installer helping you to get a number of useful tools on to your Windows
 
 ## FAQ
 
-* ** Why not use vagrant? ** Yes I know vagrant, it's great and if your happy with, it, use it!
-* ** Why not use a WAMP stack? ** I prefer something small on top of original components so that I can easily update them. Too many WAMP stacks use an outdated PHP version
-* ** What's next? ** I plan on adding a few more things like MySQL, Apache
+* **Why not use vagrant?** Yes I know vagrant, it's great and if your happy with, it, use it!
+* **Why not use a WAMP stack?** I prefer something small on top of original components so that I can easily update them. Too many WAMP stacks use an outdated PHP version
+* **What's next?** I plan on adding a few more things like MySQL, Apache
