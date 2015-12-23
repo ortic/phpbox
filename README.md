@@ -11,6 +11,7 @@ An NSIS installer helping you to get a number of useful tools on to your Windows
 * PHP composer [https://getcomposer.org/](https://getcomposer.org/)
 * Gettext / Iconv [http://mlocati.github.io/gettext-iconv-windows](http://mlocati.github.io/gettext-iconv-windows)
 * NodeJS [https://nodejs.org](https://nodejs.org)
+* Wincachegrind [http://ceefour.github.io/wincachegrind](http://ceefour.github.io/wincachegrind)
 
 ## Required NSIS plugins
 

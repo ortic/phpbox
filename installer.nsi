@@ -135,6 +135,16 @@ Section "Gettext" SecGettext
 	Delete $INSTDIR\gettexticonv.exe
 SectionEnd
 
+Section "Wincachegrind" SecWincachegrind
+    AddSize 802
+
+    inetc::get https://github.com/ceefour/wincachegrind/releases/download/1.1/wincachegrind-1.1.zip $INSTDIR\wincachegrind.zip
+    CreateDirectory "$INSTDIR\wincachegrind"
+    nsisunz::UnzipToLog "$INSTDIR\wincachegrind.zip" "$INSTDIR\wincachegrind"
+    Delete $INSTDIR\wincachegrind.zip
+SectionEnd
+
+
 SectionGroup /e "NodeJS"
 	Section "Base" SecNodeJs
 		AddSize 26726
@@ -165,6 +175,7 @@ LangString DESC_SecPhpMd ${LANG_ENGLISH} "PHP Mess Detecter to find possible bug
 LangString DESC_SecNodeJs ${LANG_ENGLISH} "NodeJS"
 LangString DESC_SecNodeJsGrunt ${LANG_ENGLISH} "Grunt"
 LangString DESC_SecNodeJsHint ${LANG_ENGLISH} "JS Hint"
+LangString DESC_SecWincachegrind ${LANG_ENGLISH} "Wincachegrind"
 
 # Assign language strings to sections
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
@@ -178,6 +189,7 @@ LangString DESC_SecNodeJsHint ${LANG_ENGLISH} "JS Hint"
 !insertmacro MUI_DESCRIPTION_TEXT ${SecNodeJs} $(DESC_SecNodeJs)
 !insertmacro MUI_DESCRIPTION_TEXT ${SecNodeJsGrunt} $(DESC_SecNodeJsGrunt)
 !insertmacro MUI_DESCRIPTION_TEXT ${SecNodeJsHint} $(DESC_SecNodeJsHint)
+!insertmacro MUI_DESCRIPTION_TEXT ${SecWincachegrind} $(DESC_SecWincachegrind)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 # Uninstaller Section
