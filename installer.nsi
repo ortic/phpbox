@@ -89,7 +89,7 @@ SectionGroup /e "PHP"
 		AddSize 21330
 		
 		# download and extract PHP
-		inetc::get http://windows.php.net/downloads/releases/php-7.0.1-Win32-VC14-x86.zip $INSTDIR\php7.0.zip
+		inetc::get http://windows.php.net/downloads/releases/php-7.0.2-Win32-VC14-x86.zip $INSTDIR\php7.0.zip
 		CreateDirectory "$INSTDIR\php7.0"
 		nsisunz::UnzipToLog "$INSTDIR\php7.0.zip" "$INSTDIR\php7.0"
 		
