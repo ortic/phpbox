@@ -2,6 +2,7 @@
 !include "MUI2.nsh"
 !include "EnvVarUpdate.nsh"
 !include "AdvReplaceInFile.nsh"
+!include "LogicLib.nsh"
 
 !define MY_APP "phpbox"
 
@@ -9,9 +10,17 @@ Name "phpbox"
 OutFile "phpbox.exe"
 ShowInstDetails show
 AllowRootDirInstall true
-RequestExecutionLevel user
+RequestExecutionLevel admin
 
 Function .onInit
+	UserInfo::GetAccountType
+	pop $0
+	${If} $0 != "admin" ;Require admin rights on NT4+
+		MessageBox mb_iconstop "Administrator rights required!"
+		SetErrorLevel 740 ;ERROR_ELEVATION_REQUIRED
+		Quit
+	${EndIf}
+
    StrCpy "$INSTDIR" "$WINDIR" 2
    StrCpy "$INSTDIR" "$INSTDIR\${MY_APP}"
 FunctionEnd
@@ -59,7 +68,7 @@ SectionGroup /e "PHP"
 		AddSize 20766
 
 		# download and extract PHP
-		inetc::get http://windows.php.net/downloads/releases/php-5.6.16-Win32-VC11-x86.zip $INSTDIR\php5.6.zip
+		inetc::get http://windows.php.net/downloads/releases/php-5.6.17-Win32-VC11-x86.zip $INSTDIR\php5.6.zip
 		CreateDirectory "$INSTDIR\php5.6"
 		nsisunz::UnzipToLog "$INSTDIR\php5.6.zip" "$INSTDIR\php5.6"
 		Delete $INSTDIR\php5.6.zip
@@ -144,7 +153,6 @@ Section "Wincachegrind" SecWincachegrind
     Delete $INSTDIR\wincachegrind.zip
 SectionEnd
 
-
 SectionGroup /e "NodeJS"
 	Section "Base" SecNodeJs
 		AddSize 26726
@@ -164,6 +172,40 @@ SectionGroup /e "NodeJS"
 	SectionEnd	
 SectionGroupEnd
 
+SectionGroup /e "MySQL"
+	Section "Base" SecMySQL
+		AddSize 327680
+		inetc::get http://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.10-win32.zip $INSTDIR\mysql.zip
+		nsisunz::UnzipToLog "$INSTDIR\mysql.zip" "$INSTDIR"
+		Delete $INSTDIR\mysql.zip
+	SectionEnd
+	
+	Section "Install MySQL Service" SecMySQLService
+	
+		CreateDirectory "$INSTDIR\mysql-data"
+		File /oname=$INSTDIR\mysql-data\my.ini my.ini
+	
+		# replace mysql data path
+		Push $$MYSQL_DATA_PATH #text to be replaced
+		Push $INSTDIR\mysql-data #replace with
+		Push all #replace all occurrences
+		Push all #replace all occurrences
+		Push $INSTDIR\mysql-data\my.ini #file to replace in
+		Call AdvReplaceInFile	
+	
+		# replace mysql program path
+		Push $$MYSQL_BASE_PATH #text to be replaced
+		Push $INSTDIR\mysql-5.7.10-win32 #replace with
+		Push all #replace all occurrences
+		Push all #replace all occurrences
+		Push $INSTDIR\mysql-data\my.ini #file to replace in
+		Call AdvReplaceInFile
+		
+		ExecWait "$INSTDIR\mysql-5.7.10-win32\bin\mysqld --install --defaults-file=$INSTDIR\mysql-data\my.ini"		
+	SectionEnd
+	
+SectionGroupEnd
+
 # Language strings
 LangString DESC_SecPhp55 ${LANG_ENGLISH} "PHP 5.5"
 LangString DESC_SecPhp56 ${LANG_ENGLISH} "PHP 5.6"
@@ -176,6 +218,8 @@ LangString DESC_SecNodeJs ${LANG_ENGLISH} "NodeJS"
 LangString DESC_SecNodeJsGrunt ${LANG_ENGLISH} "Grunt"
 LangString DESC_SecNodeJsHint ${LANG_ENGLISH} "JS Hint"
 LangString DESC_SecWincachegrind ${LANG_ENGLISH} "Wincachegrind"
+LangString DESC_SecMySQL ${LANG_ENGLISH} "MySQL"
+LangString DESC_SecMySQLService ${LANG_ENGLISH} "Base"
 
 # Assign language strings to sections
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
@@ -190,6 +234,8 @@ LangString DESC_SecWincachegrind ${LANG_ENGLISH} "Wincachegrind"
 !insertmacro MUI_DESCRIPTION_TEXT ${SecNodeJsGrunt} $(DESC_SecNodeJsGrunt)
 !insertmacro MUI_DESCRIPTION_TEXT ${SecNodeJsHint} $(DESC_SecNodeJsHint)
 !insertmacro MUI_DESCRIPTION_TEXT ${SecWincachegrind} $(DESC_SecWincachegrind)
+!insertmacro MUI_DESCRIPTION_TEXT ${SecMySQL} $(DESC_SecMySQL)
+!insertmacro MUI_DESCRIPTION_TEXT ${SecMySQLService} $(DESC_SecMySQLService)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 # Uninstaller Section
