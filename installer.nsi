@@ -120,19 +120,19 @@ SectionGroup /e "PHP"
 	
 	Section "Composer" SecPhpComposer
 		AddSize 1209
-		inetc::get https://getcomposer.org/composer.phar $INSTDIR\php\composer.phar
+		inetc::get https://getcomposer.org/composer.phar $INSTDIR\php5.6\composer.phar
 		File composer.bat
 	SectionEnd
 
 	Section "CS Fixer" SecPhpCsFixer
 		AddSize 1261
-		inetc::get http://get.sensiolabs.org/php-cs-fixer.phar $INSTDIR\php\php-cs-fixer.phar
+		inetc::get http://get.sensiolabs.org/php-cs-fixer.phar $INSTDIR\php5.6\php-cs-fixer.phar
 		File php-cs-fixer.bat
 	SectionEnd
 
 	Section "MD" SecPhpMd
 		AddSize 820
-		inetc::get http://static.phpmd.org/php/latest/phpmd.phar $INSTDIR\php\phpmd.phar
+		inetc::get http://static.phpmd.org/php/latest/phpmd.phar $INSTDIR\php5.6\phpmd.phar
 		File phpmd.bat
 	SectionEnd
 SectionGroupEnd
