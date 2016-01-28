@@ -5,6 +5,7 @@
 !include "LogicLib.nsh"
 
 !define MY_APP "phpbox"
+!define MUI_COMPONENTSPAGE_NODESC
 
 Name "phpbox"
 OutFile "phpbox.exe"
@@ -39,7 +40,7 @@ FunctionEnd
 # Installer Sections
 
 SectionGroup /e "PHP"
-	Section "5.5" SecPhp55
+	Section "5.5.30" SecPhp55
 		AddSize 19323
 	
 		# download and extract PHP
@@ -62,7 +63,7 @@ SectionGroup /e "PHP"
 		Call AdvReplaceInFile		
 	SectionEnd	
 	
-	Section "5.6" SecPhp56
+	Section "5.6.17" SecPhp56
 		SectionIn RO 
 		SetOutPath "$INSTDIR"
 		AddSize 20766
@@ -94,7 +95,7 @@ SectionGroup /e "PHP"
 		WriteUninstaller "$INSTDIR\Uninstall.exe"
 	SectionEnd
 	
-	Section "7.0" SecPhp70
+	Section "7.0.2" SecPhp70
 		AddSize 21330
 		
 		# download and extract PHP
@@ -154,7 +155,7 @@ Section "Wincachegrind" SecWincachegrind
 SectionEnd
 
 SectionGroup /e "NodeJS"
-	Section "Base" SecNodeJs
+	Section "NodeJS 4.2.3" SecNodeJs
 		AddSize 26726
 		inetc::get https://nodejs.org/dist/v4.2.3/node-v4.2.3-x86.msi $INSTDIR\nodejs.msi
 		ExecWait '"$SYSDIR\msiExec" /i "$INSTDIR\nodejs.msi" /passive'
@@ -173,7 +174,7 @@ SectionGroup /e "NodeJS"
 SectionGroupEnd
 
 SectionGroup /e "MySQL"
-	Section "Base" SecMySQL
+	Section "MySQL 5.7.10" SecMySQL
 		AddSize 327680
 		inetc::get http://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.10-win32.zip $INSTDIR\mysql.zip
 		nsisunz::UnzipToLog "$INSTDIR\mysql.zip" "$INSTDIR"
@@ -220,23 +221,6 @@ LangString DESC_SecNodeJsHint ${LANG_ENGLISH} "JS Hint"
 LangString DESC_SecWincachegrind ${LANG_ENGLISH} "Wincachegrind"
 LangString DESC_SecMySQL ${LANG_ENGLISH} "MySQL"
 LangString DESC_SecMySQLService ${LANG_ENGLISH} "Base"
-
-# Assign language strings to sections
-!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-!insertmacro MUI_DESCRIPTION_TEXT ${SecPhp55} $(DESC_SecPhp55)
-!insertmacro MUI_DESCRIPTION_TEXT ${SecPhp56} $(DESC_SecPhp56)
-!insertmacro MUI_DESCRIPTION_TEXT ${SecPhp70} $(DESC_SecPhp70)
-!insertmacro MUI_DESCRIPTION_TEXT ${SecPhpComposer} $(DESC_SecPhpComposer)
-!insertmacro MUI_DESCRIPTION_TEXT ${SecGettext} $(DESC_SecGettext)
-!insertmacro MUI_DESCRIPTION_TEXT ${SecPhpCsFixer} $(DESC_SecPhpCsFixer)
-!insertmacro MUI_DESCRIPTION_TEXT ${SecPhpMd} $(DESC_SecPhpMd)
-!insertmacro MUI_DESCRIPTION_TEXT ${SecNodeJs} $(DESC_SecNodeJs)
-!insertmacro MUI_DESCRIPTION_TEXT ${SecNodeJsGrunt} $(DESC_SecNodeJsGrunt)
-!insertmacro MUI_DESCRIPTION_TEXT ${SecNodeJsHint} $(DESC_SecNodeJsHint)
-!insertmacro MUI_DESCRIPTION_TEXT ${SecWincachegrind} $(DESC_SecWincachegrind)
-!insertmacro MUI_DESCRIPTION_TEXT ${SecMySQL} $(DESC_SecMySQL)
-!insertmacro MUI_DESCRIPTION_TEXT ${SecMySQLService} $(DESC_SecMySQLService)
-!insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 # Uninstaller Section
 Section "Uninstall"
