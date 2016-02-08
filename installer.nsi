@@ -187,7 +187,7 @@ SectionGroup /e "MySQL"
 	Section "Install MySQL Service" SecMySQLService
 	
 		CreateDirectory "$INSTDIR\mysql-data"
-		File /oname=$INSTDIR\my.ini my.ini
+		File my.ini
 	
 		# replace mysql data path
 		Push $$MYSQL_DATA_PATH #text to be replaced
@@ -206,7 +206,7 @@ SectionGroup /e "MySQL"
 		Call AdvReplaceInFile
 		
 		ExecWait "$INSTDIR\mysql-5.7.10-win32\bin\mysqld --defaults-file=$INSTDIR\my.ini --initialize"
-		ExecWait "$INSTDIR\mysql-5.7.10-win32\bin\mysqld --install --defaults-file=$INSTDIR\my.ini"
+		ExecWait "$INSTDIR\mysql-5.7.10-win32\bin\mysqld --install MySQL --defaults-file=$INSTDIR\my.ini"
 	SectionEnd
 	
 SectionGroupEnd
