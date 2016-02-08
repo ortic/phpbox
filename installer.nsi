@@ -9,6 +9,7 @@
 
 Name "phpbox"
 OutFile "phpbox.exe"
+InstallDir "c:\phpbox"
 ShowInstDetails show
 AllowRootDirInstall true
 RequestExecutionLevel admin
@@ -54,6 +55,7 @@ SectionGroup /e "PHP"
 		
 		# create php configuration file
 		File /oname=$INSTDIR\php5.5\php.ini php55.ini
+		File php55.bat
 		
 		Push $$PHPPATH #text to be replaced
 		Push $INSTDIR\php5.6 #replace with
@@ -63,19 +65,19 @@ SectionGroup /e "PHP"
 		Call AdvReplaceInFile		
 	SectionEnd	
 	
-	Section "5.6.17" SecPhp56
+	Section "5.6.18" SecPhp56
 		SectionIn RO 
 		SetOutPath "$INSTDIR"
-		AddSize 20766
+		AddSize 20684
 
 		# download and extract PHP
-		inetc::get http://windows.php.net/downloads/releases/php-5.6.17-Win32-VC11-x86.zip $INSTDIR\php5.6.zip
+		inetc::get http://windows.php.net/downloads/releases/php-5.6.18-Win32-VC11-x86.zip $INSTDIR\php5.6.zip
 		CreateDirectory "$INSTDIR\php5.6"
 		nsisunz::UnzipToLog "$INSTDIR\php5.6.zip" "$INSTDIR\php5.6"
 		Delete $INSTDIR\php5.6.zip
 		
 		# download xdebug extension
-		inetc::get http://xdebug.org/files/php_xdebug-2.4.0rc3-5.6-vc11.dll $INSTDIR\php5.6\ext\php_xdebug.dll
+		inetc::get http://xdebug.org/files/php_xdebug-2.4.0rc4-5.6-vc11.dll $INSTDIR\php5.6\ext\php_xdebug.dll
 		
 		File README.md
 		File php.bat
@@ -95,19 +97,20 @@ SectionGroup /e "PHP"
 		WriteUninstaller "$INSTDIR\Uninstall.exe"
 	SectionEnd
 	
-	Section "7.0.2" SecPhp70
+	Section "7.0.3" SecPhp70
 		AddSize 21330
 		
 		# download and extract PHP
-		inetc::get http://windows.php.net/downloads/releases/php-7.0.2-Win32-VC14-x86.zip $INSTDIR\php7.0.zip
+		inetc::get http://windows.php.net/downloads/releases/php-7.0.3-Win32-VC14-x86.zip $INSTDIR\php7.0.zip
 		CreateDirectory "$INSTDIR\php7.0"
 		nsisunz::UnzipToLog "$INSTDIR\php7.0.zip" "$INSTDIR\php7.0"
 		
 		# download xdebug extension
-		inetc::get http://xdebug.org/files/php_xdebug-2.4.0rc3-7.0-vc14.dll $INSTDIR\php7.0\ext\php_xdebug.dll
+		inetc::get http://xdebug.org/files/php_xdebug-2.4.0rc4-7.0-vc14.dll $INSTDIR\php7.0\ext\php_xdebug.dll
 		
 		# create php configuration file
 		File /oname=$INSTDIR\php7.0\php.ini php70.ini
+		File php7.bat
 		
 		Push $$PHPPATH #text to be replaced
 		Push $INSTDIR\php7.0 #replace with
@@ -155,9 +158,9 @@ Section "Wincachegrind" SecWincachegrind
 SectionEnd
 
 SectionGroup /e "NodeJS"
-	Section "NodeJS 4.2.3" SecNodeJs
-		AddSize 26726
-		inetc::get https://nodejs.org/dist/v4.2.3/node-v4.2.3-x86.msi $INSTDIR\nodejs.msi
+	Section "NodeJS 4.2.6" SecNodeJs
+		AddSize 9216
+		inetc::get https://nodejs.org/dist/v4.2.6/node-v4.2.6-x86.msi $INSTDIR\nodejs.msi
 		ExecWait '"$SYSDIR\msiExec" /i "$INSTDIR\nodejs.msi" /passive'
 		Delete $INSTDIR\nodejs.msi
 	SectionEnd
@@ -184,14 +187,14 @@ SectionGroup /e "MySQL"
 	Section "Install MySQL Service" SecMySQLService
 	
 		CreateDirectory "$INSTDIR\mysql-data"
-		File /oname=$INSTDIR\mysql-data\my.ini my.ini
+		File /oname=$INSTDIR\my.ini my.ini
 	
 		# replace mysql data path
 		Push $$MYSQL_DATA_PATH #text to be replaced
 		Push $INSTDIR\mysql-data #replace with
 		Push all #replace all occurrences
 		Push all #replace all occurrences
-		Push $INSTDIR\mysql-data\my.ini #file to replace in
+		Push $INSTDIR\my.ini #file to replace in
 		Call AdvReplaceInFile	
 	
 		# replace mysql program path
@@ -199,10 +202,11 @@ SectionGroup /e "MySQL"
 		Push $INSTDIR\mysql-5.7.10-win32 #replace with
 		Push all #replace all occurrences
 		Push all #replace all occurrences
-		Push $INSTDIR\mysql-data\my.ini #file to replace in
+		Push $INSTDIR\my.ini #file to replace in
 		Call AdvReplaceInFile
 		
-		ExecWait "$INSTDIR\mysql-5.7.10-win32\bin\mysqld --install --defaults-file=$INSTDIR\mysql-data\my.ini"		
+		ExecWait "$INSTDIR\mysql-5.7.10-win32\bin\mysqld --defaults-file=$INSTDIR\my.ini --initialize"
+		ExecWait "$INSTDIR\mysql-5.7.10-win32\bin\mysqld --install --defaults-file=$INSTDIR\my.ini"
 	SectionEnd
 	
 SectionGroupEnd
