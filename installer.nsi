@@ -205,7 +205,7 @@ SectionGroup /e "MySQL"
 		Push $INSTDIR\my.ini #file to replace in
 		Call AdvReplaceInFile
 		
-		ExecWait "$INSTDIR\mysql-5.7.10-win32\bin\mysqld --defaults-file=$INSTDIR\my.ini --initialize"
+		ExecWait "$INSTDIR\mysql-5.7.10-win32\bin\mysqld --defaults-file=$INSTDIR\my.ini --initialize-insecure"
 		ExecWait "$INSTDIR\mysql-5.7.10-win32\bin\mysqld --install MySQL --defaults-file=$INSTDIR\my.ini"
 	SectionEnd
 	
@@ -229,7 +229,19 @@ LangString DESC_SecMySQLService ${LANG_ENGLISH} "Base"
 # Uninstaller Section
 Section "Uninstall"
   Delete "$INSTDIR\Uninstall.exe"
+  Delete "$INSTDIR\composer.bat"
+  Delete "$INSTDIR\my.ini"
+  Delete "$INSTDIR\php.bat"
+  Delete "$INSTDIR\php55.bat"
+  Delete "$INSTDIR\php70.bat"
+  Delete "$INSTDIR\php-cs-fixer.bat"
+  Delete "$INSTDIR\phpmd.bat"
+  Delete "$INSTDIR\README.md"
   ${un.EnvVarUpdate} $0 "PATH" "R" "HKCU" "$INSTDIR"
-  RMDir /r /REBOOTOK  "$INSTDIR"
+  RMDir /r /REBOOTOK  "$INSTDIR\mysql-5.7.10-win32"
+  RMDir /r /REBOOTOK  "$INSTDIR\php5.5"
+  RMDir /r /REBOOTOK  "$INSTDIR\php5.6"
+  RMDir /r /REBOOTOK  "$INSTDIR\php7.0"
+  RMDir /r /REBOOTOK  "$INSTDIR\wincachegrind"
 SectionEnd
 
