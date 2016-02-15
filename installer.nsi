@@ -139,6 +139,12 @@ SectionGroup /e "PHP"
 		inetc::get http://static.phpmd.org/php/latest/phpmd.phar $INSTDIR\php5.6\phpmd.phar
 		File phpmd.bat
 	SectionEnd
+	
+	Section "PHPUnit" SecPhpUnit
+		AddSize 2734
+		inetc::get https://phar.phpunit.de/phpunit.phar $INSTDIR\php5.6\phpunit.phar
+		File phpunit.bat
+	SectionEnd
 SectionGroupEnd
 
 Section "Gettext" SecGettext
@@ -219,6 +225,7 @@ LangString DESC_SecPhpComposer ${LANG_ENGLISH} "composer, dependency management 
 LangString DESC_SecGettext ${LANG_ENGLISH} "Gettext and iconv console tools"
 LangString DESC_SecPhpCsFixer ${LANG_ENGLISH} "PHP CS Fixer"
 LangString DESC_SecPhpMd ${LANG_ENGLISH} "PHP Mess Detecter to find possible bugs, suboptimal as well as overcomplicated code"
+LangString DESC_SecPhpUnit ${LANG_ENGLISH} "PHP Unit"
 LangString DESC_SecNodeJs ${LANG_ENGLISH} "NodeJS"
 LangString DESC_SecNodeJsGrunt ${LANG_ENGLISH} "Grunt"
 LangString DESC_SecNodeJsHint ${LANG_ENGLISH} "JS Hint"
@@ -236,6 +243,7 @@ Section "Uninstall"
   Delete "$INSTDIR\php70.bat"
   Delete "$INSTDIR\php-cs-fixer.bat"
   Delete "$INSTDIR\phpmd.bat"
+  Delete "$INSTDIR\phpunit.bat"
   Delete "$INSTDIR\README.md"
   ${un.EnvVarUpdate} $0 "PATH" "R" "HKCU" "$INSTDIR"
   RMDir /r /REBOOTOK  "$INSTDIR\mysql-5.7.10-win32"
