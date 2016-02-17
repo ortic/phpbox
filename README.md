@@ -2,6 +2,10 @@
 
 An NSIS installer helping you to get a number of useful tools on to your Windows computer if you want to develop PHP applications on your local computer.
 
+## Download
+
+If you simply wish to use phpBox, head over to https://github.com/ortic/phpbox/releases and download the lastest exe.
+
 ## Content
 
 * PHP 5.5, 5.6, 7.0 [http://php.net](http://php.net)
@@ -15,6 +19,8 @@ An NSIS installer helping you to get a number of useful tools on to your Windows
 * Wincachegrind [http://ceefour.github.io/wincachegrind](http://ceefour.github.io/wincachegrind)
 
 ## Required NSIS plugins
+
+If you want to compile the installer yourself, install [NSIS](http://nsis.sourceforge.net/) and copy the two plugins below into the plugins directory of your NSIS installation.
 
 * [http://nsis.sourceforge.net/Inetc_plug-in](http://nsis.sourceforge.net/Inetc_plug-in)
 * [http://nsis.sourceforge.net/Nsisunz_plug-in](http://nsis.sourceforge.net/Nsisunz_plug-in)
