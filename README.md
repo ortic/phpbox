@@ -20,7 +20,7 @@ If you simply wish to use phpBox, head over to https://github.com/ortic/phpbox/r
 
 ## Required NSIS plugins
 
-If you want to compile the installer yourself, install [NSIS](http://nsis.sourceforge.net/) and copy the two plugins below into the plugins directory of your NSIS installation.
+If you want to compile the installer yourself, install [NSIS](http://nsis.sourceforge.net/) and copy the two plugins below into the plugins directory of your NSIS installation. More information about how to install can be found on this page http://nsis.sourceforge.net/How_can_I_install_a_plugin
 
 * [http://nsis.sourceforge.net/Inetc_plug-in](http://nsis.sourceforge.net/Inetc_plug-in)
 * [http://nsis.sourceforge.net/Nsisunz_plug-in](http://nsis.sourceforge.net/Nsisunz_plug-in)
