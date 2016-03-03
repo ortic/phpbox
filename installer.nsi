@@ -53,6 +53,8 @@ SectionGroup /e "PHP"
 		# download xdebug extension
 		inetc::get http://xdebug.org/files/php_xdebug-2.4.0rc3-5.5-vc11.dll $INSTDIR\php5.5\ext\php_xdebug.dll
 		
+		inetc::get http://curl.haxx.se/ca/cacert.pem $INSTDIR\php5.5\cacert.pem
+
 		# create php configuration file
 		File /oname=$INSTDIR\php5.5\php.ini php55.ini
 		File php55.bat
@@ -78,6 +80,8 @@ SectionGroup /e "PHP"
 		
 		# download xdebug extension
 		inetc::get http://xdebug.org/files/php_xdebug-2.4.0rc4-5.6-vc11.dll $INSTDIR\php5.6\ext\php_xdebug.dll
+		
+		inetc::get http://curl.haxx.se/ca/cacert.pem $INSTDIR\php5.6\cacert.pem
 		
 		File README.md
 		File php.bat
@@ -107,6 +111,8 @@ SectionGroup /e "PHP"
 		
 		# download xdebug extension
 		inetc::get http://xdebug.org/files/php_xdebug-2.4.0rc4-7.0-vc14.dll $INSTDIR\php7.0\ext\php_xdebug.dll
+		
+		inetc::get http://curl.haxx.se/ca/cacert.pem $INSTDIR\php7.0\cacert.pem
 		
 		# create php configuration file
 		File /oname=$INSTDIR\php7.0\php.ini php70.ini
