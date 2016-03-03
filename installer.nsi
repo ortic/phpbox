@@ -41,8 +41,8 @@ FunctionEnd
 # Installer Sections
 
 SectionGroup /e "PHP"
-	Section "5.5.30" SecPhp55
-		AddSize 19323
+	Section "5.5.33" SecPhp55
+		AddSize 19251
 	
 		# download and extract PHP
 		inetc::get http://windows.php.net/downloads/releases/php-5.5.30-Win32-VC11-x86.zip $INSTDIR\php5.5.zip
@@ -67,13 +67,13 @@ SectionGroup /e "PHP"
 		Call AdvReplaceInFile		
 	SectionEnd	
 	
-	Section "5.6.18" SecPhp56
+	Section "5.6.19" SecPhp56
 		SectionIn RO 
 		SetOutPath "$INSTDIR"
-		AddSize 20684
+		AddSize 20787
 
 		# download and extract PHP
-		inetc::get http://windows.php.net/downloads/releases/php-5.6.18-Win32-VC11-x86.zip $INSTDIR\php5.6.zip
+		inetc::get http://windows.php.net/downloads/releases/php-5.6.19-Win32-VC11-x86.zip $INSTDIR\php5.6.zip
 		CreateDirectory "$INSTDIR\php5.6"
 		nsisunz::UnzipToLog "$INSTDIR\php5.6.zip" "$INSTDIR\php5.6"
 		Delete $INSTDIR\php5.6.zip
@@ -101,11 +101,11 @@ SectionGroup /e "PHP"
 		WriteUninstaller "$INSTDIR\Uninstall.exe"
 	SectionEnd
 	
-	Section "7.0.3" SecPhp70
-		AddSize 21330
+	Section "7.0.4" SecPhp70
+		AddSize 21299
 		
 		# download and extract PHP
-		inetc::get http://windows.php.net/downloads/releases/php-7.0.3-Win32-VC14-x86.zip $INSTDIR\php7.0.zip
+		inetc::get http://windows.php.net/downloads/releases/php-7.0.4-Win32-VC14-x86.zip $INSTDIR\php7.0.zip
 		CreateDirectory "$INSTDIR\php7.0"
 		nsisunz::UnzipToLog "$INSTDIR\php7.0.zip" "$INSTDIR\php7.0"
 		
