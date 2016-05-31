@@ -1,2 +1,2 @@
 @ECHO OFF
-%~dp0\php5.6\php.exe %~dp0\php5.6\composer.phar %*
+%~dp0\php5.6\php.exe -n -dextension=%~dp0\php5.6\ext\php_openssl.dll -dextension=%~dp0\php5.6\ext\php_mbstring.dll -dextension=%~dp0\php5.6\ext\php_intl.dll %~dp0\php5.6\composer.phar %*
