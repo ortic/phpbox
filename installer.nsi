@@ -41,39 +41,14 @@ FunctionEnd
 # Installer Sections
 
 SectionGroup /e "PHP"
-	Section "5.5.33" SecPhp55
-		AddSize 19251
 	
-		# download and extract PHP
-		inetc::get http://windows.php.net/downloads/releases/php-5.5.30-Win32-VC11-x86.zip $INSTDIR\php5.5.zip
-		CreateDirectory "$INSTDIR\php5.5"
-		nsisunz::UnzipToLog "$INSTDIR\php5.5.zip" "$INSTDIR\php5.5"
-		Delete $INSTDIR\php5.5.zip
-		
-		# download xdebug extension
-		inetc::get http://xdebug.org/files/php_xdebug-2.4.0rc3-5.5-vc11.dll $INSTDIR\php5.5\ext\php_xdebug.dll
-		
-		inetc::get http://curl.haxx.se/ca/cacert.pem $INSTDIR\php5.5\cacert.pem
-
-		# create php configuration file
-		File /oname=$INSTDIR\php5.5\php.ini php55.ini
-		File php55.bat
-		
-		Push $$PHPPATH #text to be replaced
-		Push $INSTDIR\php5.6 #replace with
-		Push all #replace all occurrences
-		Push all #replace all occurrences
-		Push $INSTDIR\php5.6\php.ini #file to replace in
-		Call AdvReplaceInFile		
-	SectionEnd	
-	
-	Section "5.6.19" SecPhp56
+	Section "5.6.25" SecPhp56
 		SectionIn RO 
 		SetOutPath "$INSTDIR"
-		AddSize 20787
+		AddSize 20859
 
 		# download and extract PHP
-		inetc::get http://windows.php.net/downloads/releases/php-5.6.19-Win32-VC11-x86.zip $INSTDIR\php5.6.zip
+		inetc::get http://windows.php.net/downloads/releases/php-5.6.25-Win32-VC11-x86.zip $INSTDIR\php5.6.zip
 		CreateDirectory "$INSTDIR\php5.6"
 		nsisunz::UnzipToLog "$INSTDIR\php5.6.zip" "$INSTDIR\php5.6"
 		Delete $INSTDIR\php5.6.zip
@@ -101,11 +76,11 @@ SectionGroup /e "PHP"
 		WriteUninstaller "$INSTDIR\Uninstall.exe"
 	SectionEnd
 	
-	Section "7.0.4" SecPhp70
-		AddSize 21299
+	Section "7.0.10" SecPhp70
+		AddSize 21533
 		
 		# download and extract PHP
-		inetc::get http://windows.php.net/downloads/releases/php-7.0.4-Win32-VC14-x86.zip $INSTDIR\php7.0.zip
+		inetc::get http://windows.php.net/downloads/releases/php-7.0.10-Win32-VC14-x86.zip $INSTDIR\php7.0.zip
 		CreateDirectory "$INSTDIR\php7.0"
 		nsisunz::UnzipToLog "$INSTDIR\php7.0.zip" "$INSTDIR\php7.0"
 		
@@ -170,9 +145,9 @@ Section "Wincachegrind" SecWincachegrind
 SectionEnd
 
 SectionGroup /e "NodeJS"
-	Section "NodeJS 4.2.6" SecNodeJs
-		AddSize 9216
-		inetc::get https://nodejs.org/dist/v4.2.6/node-v4.2.6-x86.msi $INSTDIR\nodejs.msi
+	Section "NodeJS 6.5.0" SecNodeJs
+		AddSize 11059
+		inetc::get https://nodejs.org/dist/v6.5.0/node-v6.5.0-x86.msi $INSTDIR\nodejs.msi
 		ExecWait '"$SYSDIR\msiExec" /i "$INSTDIR\nodejs.msi" /passive'
 		Delete $INSTDIR\nodejs.msi
 	SectionEnd
@@ -189,9 +164,9 @@ SectionGroup /e "NodeJS"
 SectionGroupEnd
 
 SectionGroup /e "MySQL"
-	Section "MySQL 5.7.10" SecMySQL
+	Section "MySQL 5.7.14" SecMySQL
 		AddSize 327680
-		inetc::get http://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.10-win32.zip $INSTDIR\mysql.zip
+		inetc::get http://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.14-win32.zip $INSTDIR\mysql.zip
 		nsisunz::UnzipToLog "$INSTDIR\mysql.zip" "$INSTDIR"
 		Delete $INSTDIR\mysql.zip
 	SectionEnd
@@ -211,20 +186,19 @@ SectionGroup /e "MySQL"
 	
 		# replace mysql program path
 		Push $$MYSQL_BASE_PATH #text to be replaced
-		Push $INSTDIR\mysql-5.7.10-win32 #replace with
+		Push $INSTDIR\mysql-5.7.14-win32 #replace with
 		Push all #replace all occurrences
 		Push all #replace all occurrences
 		Push $INSTDIR\my.ini #file to replace in
 		Call AdvReplaceInFile
 		
-		ExecWait "$INSTDIR\mysql-5.7.10-win32\bin\mysqld --defaults-file=$INSTDIR\my.ini --initialize-insecure"
-		ExecWait "$INSTDIR\mysql-5.7.10-win32\bin\mysqld --install MySQL --defaults-file=$INSTDIR\my.ini"
+		ExecWait "$INSTDIR\mysql-5.7.14-win32\bin\mysqld --defaults-file=$INSTDIR\my.ini --initialize-insecure"
+		ExecWait "$INSTDIR\mysql-5.7.14-win32\bin\mysqld --install MySQL --defaults-file=$INSTDIR\my.ini"
 	SectionEnd
 	
 SectionGroupEnd
 
 # Language strings
-LangString DESC_SecPhp55 ${LANG_ENGLISH} "PHP 5.5"
 LangString DESC_SecPhp56 ${LANG_ENGLISH} "PHP 5.6"
 LangString DESC_SecPhp70 ${LANG_ENGLISH} "PHP 7.0"
 LangString DESC_SecPhpComposer ${LANG_ENGLISH} "composer, dependency management for PHP"
@@ -245,15 +219,13 @@ Section "Uninstall"
   Delete "$INSTDIR\composer.bat"
   Delete "$INSTDIR\my.ini"
   Delete "$INSTDIR\php.bat"
-  Delete "$INSTDIR\php55.bat"
   Delete "$INSTDIR\php70.bat"
   Delete "$INSTDIR\php-cs-fixer.bat"
   Delete "$INSTDIR\phpmd.bat"
   Delete "$INSTDIR\phpunit.bat"
   Delete "$INSTDIR\README.md"
   ${un.EnvVarUpdate} $0 "PATH" "R" "HKCU" "$INSTDIR"
-  RMDir /r /REBOOTOK  "$INSTDIR\mysql-5.7.10-win32"
-  RMDir /r /REBOOTOK  "$INSTDIR\php5.5"
+  RMDir /r /REBOOTOK  "$INSTDIR\mysql-5.7.14-win32"
   RMDir /r /REBOOTOK  "$INSTDIR\php5.6"
   RMDir /r /REBOOTOK  "$INSTDIR\php7.0"
   RMDir /r /REBOOTOK  "$INSTDIR\wincachegrind"

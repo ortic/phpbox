@@ -9,7 +9,7 @@ If you simply wish to use phpBox, head over to https://github.com/ortic/phpbox/r
 ## Content
 
 * PHP 5.5, 5.6, 7.0 [http://php.net](http://php.net)
-* MySQL 5.7.10 [http://www.mysql.com](http://www.mysql.com)
+* MySQL 5.7.14 [http://www.mysql.com](http://www.mysql.com)
 * xDebug matching the PHP versions [http://xdebug.org](http://xdebug.org)
 * PHP Mess Detecter [http://phpmd.org](http://phpmd.org)
 * PHP Cs Fixer [https://github.com/FriendsOfPHP/PHP-CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer)
