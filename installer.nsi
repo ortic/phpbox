@@ -48,7 +48,7 @@ SectionGroup /e "PHP"
 		AddSize 20859
 
 		# download and extract PHP
-		inetc::get http://windows.php.net/downloads/releases/php-5.6.25-Win32-VC11-x86.zip $INSTDIR\php5.6.zip
+		inetc::get http://windows.php.net/downloads/releases/php-5.6.26-Win32-VC11-x86.zip $INSTDIR\php5.6.zip
 		CreateDirectory "$INSTDIR\php5.6"
 		nsisunz::UnzipToLog "$INSTDIR\php5.6.zip" "$INSTDIR\php5.6"
 		Delete $INSTDIR\php5.6.zip
@@ -80,7 +80,7 @@ SectionGroup /e "PHP"
 		AddSize 21533
 		
 		# download and extract PHP
-		inetc::get http://windows.php.net/downloads/releases/php-7.0.10-Win32-VC14-x86.zip $INSTDIR\php7.0.zip
+		inetc::get http://windows.php.net/downloads/releases/php-7.0.11-Win32-VC14-x86.zip $INSTDIR\php7.0.zip
 		CreateDirectory "$INSTDIR\php7.0"
 		nsisunz::UnzipToLog "$INSTDIR\php7.0.zip" "$INSTDIR\php7.0"
 		
