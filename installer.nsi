@@ -42,13 +42,13 @@ FunctionEnd
 
 SectionGroup /e "PHP"
 	
-	Section "5.6.25" SecPhp56
+	Section "5.6.27" SecPhp56
 		SectionIn RO 
 		SetOutPath "$INSTDIR"
 		AddSize 20859
 
 		# download and extract PHP
-		inetc::get http://windows.php.net/downloads/releases/php-5.6.26-Win32-VC11-x86.zip $INSTDIR\php5.6.zip
+		inetc::get http://windows.php.net/downloads/releases/php-5.6.27-Win32-VC11-x86.zip $INSTDIR\php5.6.zip
 		CreateDirectory "$INSTDIR\php5.6"
 		nsisunz::UnzipToLog "$INSTDIR\php5.6.zip" "$INSTDIR\php5.6"
 		Delete $INSTDIR\php5.6.zip
@@ -76,11 +76,11 @@ SectionGroup /e "PHP"
 		WriteUninstaller "$INSTDIR\Uninstall.exe"
 	SectionEnd
 	
-	Section "7.0.10" SecPhp70
+	Section "7.0.12" SecPhp70
 		AddSize 21533
 		
 		# download and extract PHP
-		inetc::get http://windows.php.net/downloads/releases/php-7.0.11-Win32-VC14-x86.zip $INSTDIR\php7.0.zip
+		inetc::get http://windows.php.net/downloads/releases/php-7.0.12-Win32-VC14-x86.zip $INSTDIR\php7.0.zip
 		CreateDirectory "$INSTDIR\php7.0"
 		nsisunz::UnzipToLog "$INSTDIR\php7.0.zip" "$INSTDIR\php7.0"
 		
@@ -145,9 +145,9 @@ Section "Wincachegrind" SecWincachegrind
 SectionEnd
 
 SectionGroup /e "NodeJS"
-	Section "NodeJS 6.5.0" SecNodeJs
+	Section "NodeJS 6.9.1" SecNodeJs
 		AddSize 11059
-		inetc::get https://nodejs.org/dist/v6.5.0/node-v6.5.0-x86.msi $INSTDIR\nodejs.msi
+		inetc::get https://nodejs.org/dist/v6.9.1/node-v6.9.1-x86.msi $INSTDIR\nodejs.msi
 		ExecWait '"$SYSDIR\msiExec" /i "$INSTDIR\nodejs.msi" /passive'
 		Delete $INSTDIR\nodejs.msi
 	SectionEnd
@@ -164,9 +164,9 @@ SectionGroup /e "NodeJS"
 SectionGroupEnd
 
 SectionGroup /e "MySQL"
-	Section "MySQL 5.7.14" SecMySQL
+	Section "MySQL 5.7.16" SecMySQL
 		AddSize 327680
-		inetc::get http://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.14-win32.zip $INSTDIR\mysql.zip
+		inetc::get http://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.16-win32.zip $INSTDIR\mysql.zip
 		nsisunz::UnzipToLog "$INSTDIR\mysql.zip" "$INSTDIR"
 		Delete $INSTDIR\mysql.zip
 	SectionEnd
@@ -192,8 +192,8 @@ SectionGroup /e "MySQL"
 		Push $INSTDIR\my.ini #file to replace in
 		Call AdvReplaceInFile
 		
-		ExecWait "$INSTDIR\mysql-5.7.14-win32\bin\mysqld --defaults-file=$INSTDIR\my.ini --initialize-insecure"
-		ExecWait "$INSTDIR\mysql-5.7.14-win32\bin\mysqld --install MySQL --defaults-file=$INSTDIR\my.ini"
+		ExecWait "$INSTDIR\mysql-5.7.16-win32\bin\mysqld --defaults-file=$INSTDIR\my.ini --initialize-insecure"
+		ExecWait "$INSTDIR\mysql-5.7.16-win32\bin\mysqld --install MySQL --defaults-file=$INSTDIR\my.ini"
 	SectionEnd
 	
 SectionGroupEnd
@@ -225,7 +225,7 @@ Section "Uninstall"
   Delete "$INSTDIR\phpunit.bat"
   Delete "$INSTDIR\README.md"
   ${un.EnvVarUpdate} $0 "PATH" "R" "HKCU" "$INSTDIR"
-  RMDir /r /REBOOTOK  "$INSTDIR\mysql-5.7.14-win32"
+  RMDir /r /REBOOTOK  "$INSTDIR\mysql-5.7.16-win32"
   RMDir /r /REBOOTOK  "$INSTDIR\php5.6"
   RMDir /r /REBOOTOK  "$INSTDIR\php7.0"
   RMDir /r /REBOOTOK  "$INSTDIR\wincachegrind"
