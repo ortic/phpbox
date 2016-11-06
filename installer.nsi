@@ -186,7 +186,7 @@ SectionGroup /e "MySQL"
 	
 		# replace mysql program path
 		Push $$MYSQL_BASE_PATH #text to be replaced
-		Push $INSTDIR\mysql-5.7.14-win32 #replace with
+		Push $INSTDIR\mysql-5.7.16-win32 #replace with
 		Push all #replace all occurrences
 		Push all #replace all occurrences
 		Push $INSTDIR\my.ini #file to replace in
