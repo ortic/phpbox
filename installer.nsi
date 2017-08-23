@@ -42,19 +42,19 @@ FunctionEnd
 
 SectionGroup /e "PHP"
 	
-	Section "5.6.27" SecPhp56
+	Section "5.6.31" SecPhp56
 		SectionIn RO 
 		SetOutPath "$INSTDIR"
-		AddSize 20859
+		AddSize 20992
 
 		# download and extract PHP
-		inetc::get http://windows.php.net/downloads/releases/php-5.6.27-Win32-VC11-x86.zip $INSTDIR\php5.6.zip
+		inetc::get http://windows.php.net/downloads/releases/php-5.6.31-Win32-VC11-x86.zip $INSTDIR\php5.6.zip
 		CreateDirectory "$INSTDIR\php5.6"
 		nsisunz::UnzipToLog "$INSTDIR\php5.6.zip" "$INSTDIR\php5.6"
 		Delete $INSTDIR\php5.6.zip
 		
 		# download xdebug extension
-		inetc::get http://xdebug.org/files/php_xdebug-2.4.0rc4-5.6-vc11.dll $INSTDIR\php5.6\ext\php_xdebug.dll
+		inetc::get https://xdebug.org/files/php_xdebug-2.5.5-5.6-vc11.dll $INSTDIR\php5.6\ext\php_xdebug.dll
 		
 		inetc::get http://curl.haxx.se/ca/cacert.pem $INSTDIR\php5.6\cacert.pem
 		
@@ -76,16 +76,16 @@ SectionGroup /e "PHP"
 		WriteUninstaller "$INSTDIR\Uninstall.exe"
 	SectionEnd
 	
-	Section "7.0.12" SecPhp70
-		AddSize 21533
+	Section "7.0.22" SecPhp70
+		AddSize 21811
 		
 		# download and extract PHP
-		inetc::get http://windows.php.net/downloads/releases/php-7.0.12-Win32-VC14-x86.zip $INSTDIR\php7.0.zip
+		inetc::get http://windows.php.net/downloads/releases/php-7.0.22-Win32-VC14-x86.zip $INSTDIR\php7.0.zip
 		CreateDirectory "$INSTDIR\php7.0"
 		nsisunz::UnzipToLog "$INSTDIR\php7.0.zip" "$INSTDIR\php7.0"
 		
 		# download xdebug extension
-		inetc::get http://xdebug.org/files/php_xdebug-2.4.0rc4-7.0-vc14.dll $INSTDIR\php7.0\ext\php_xdebug.dll
+		inetc::get https://xdebug.org/files/php_xdebug-2.5.5-7.0-vc14.dll $INSTDIR\php7.0\ext\php_xdebug.dll
 		
 		inetc::get http://curl.haxx.se/ca/cacert.pem $INSTDIR\php7.0\cacert.pem
 		
@@ -103,9 +103,36 @@ SectionGroup /e "PHP"
 		Delete $INSTDIR\php7.0.zip
 	SectionEnd	
 	
+	Section "7.1.8" SecPhp71
+		AddSize 21811
+		
+		# download and extract PHP
+		inetc::get http://windows.php.net/downloads/releases/php-7.1.8-Win32-VC14-x86.zip $INSTDIR\php7.1.zip
+		CreateDirectory "$INSTDIR\php7.1"
+		nsisunz::UnzipToLog "$INSTDIR\php7.1.zip" "$INSTDIR\php7.1"
+		
+		# download xdebug extension
+		inetc::get https://xdebug.org/files/php_xdebug-2.5.5-7.1-vc14.dll $INSTDIR\php7.1\ext\php_xdebug.dll
+		
+		inetc::get http://curl.haxx.se/ca/cacert.pem $INSTDIR\php7.1\cacert.pem
+		
+		# create php configuration file
+		File /oname=$INSTDIR\php7.1\php.ini php71.ini
+		File php71.bat
+		
+		Push $$PHPPATH #text to be replaced
+		Push $INSTDIR\php7.1 #replace with
+		Push all #replace all occurrences
+		Push all #replace all occurrences
+		Push $INSTDIR\php7.1\php.ini #file to replace in
+		Call AdvReplaceInFile
+		
+		Delete $INSTDIR\php7.1.zip
+	SectionEnd
+
 	Section "Composer" SecPhpComposer
 		AddSize 1209
-		inetc::get https://getcomposer.org/composer.phar $INSTDIR\php5.6\composer.phar
+		inetc::get https://getcomposer.org/composer.phar $INSTDIR\composer.phar
 		File composer.bat
 	SectionEnd
 
@@ -201,6 +228,7 @@ SectionGroupEnd
 # Language strings
 LangString DESC_SecPhp56 ${LANG_ENGLISH} "PHP 5.6"
 LangString DESC_SecPhp70 ${LANG_ENGLISH} "PHP 7.0"
+LangString DESC_SecPhp71 ${LANG_ENGLISH} "PHP 7.1"
 LangString DESC_SecPhpComposer ${LANG_ENGLISH} "composer, dependency management for PHP"
 LangString DESC_SecGettext ${LANG_ENGLISH} "Gettext and iconv console tools"
 LangString DESC_SecPhpCsFixer ${LANG_ENGLISH} "PHP CS Fixer"
@@ -220,6 +248,7 @@ Section "Uninstall"
   Delete "$INSTDIR\my.ini"
   Delete "$INSTDIR\php.bat"
   Delete "$INSTDIR\php70.bat"
+  Delete "$INSTDIR\php71.bat"
   Delete "$INSTDIR\php-cs-fixer.bat"
   Delete "$INSTDIR\phpmd.bat"
   Delete "$INSTDIR\phpunit.bat"
@@ -228,6 +257,7 @@ Section "Uninstall"
   RMDir /r /REBOOTOK  "$INSTDIR\mysql-5.7.16-win32"
   RMDir /r /REBOOTOK  "$INSTDIR\php5.6"
   RMDir /r /REBOOTOK  "$INSTDIR\php7.0"
+  RMDir /r /REBOOTOK  "$INSTDIR\php7.1"
   RMDir /r /REBOOTOK  "$INSTDIR\wincachegrind"
 SectionEnd
 
