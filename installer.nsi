@@ -153,6 +153,15 @@ SectionGroup /e "PHP"
 		inetc::get https://phar.phpunit.de/phpunit.phar $INSTDIR\php5.6\phpunit.phar
 		File phpunit.bat
 	SectionEnd
+
+	Section "Caddy" SecCaddy
+		AddSize 5529
+		inetc::get https://caddyserver.com/download/windows/amd64?license= $INSTDIR\caddy.zip
+		CreateDirectory "$INSTDIR\caddy"
+		nsisunz::UnzipToLog "$INSTDIR\caddy.zip" "$INSTDIR\caddy"
+		File /oname=$INSTDIR\caddy\caddy.conf caddy.conf
+	SectionEnd
+
 SectionGroupEnd
 
 Section "Gettext" SecGettext
@@ -234,6 +243,7 @@ LangString DESC_SecGettext ${LANG_ENGLISH} "Gettext and iconv console tools"
 LangString DESC_SecPhpCsFixer ${LANG_ENGLISH} "PHP CS Fixer"
 LangString DESC_SecPhpMd ${LANG_ENGLISH} "PHP Mess Detecter to find possible bugs, suboptimal as well as overcomplicated code"
 LangString DESC_SecPhpUnit ${LANG_ENGLISH} "PHP Unit"
+LangString DESC_SecCaddy ${LANG_ENGLISH} "Caddy"
 LangString DESC_SecNodeJs ${LANG_ENGLISH} "NodeJS"
 LangString DESC_SecNodeJsGrunt ${LANG_ENGLISH} "Grunt"
 LangString DESC_SecNodeJsHint ${LANG_ENGLISH} "JS Hint"
